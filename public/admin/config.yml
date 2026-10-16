@@ -1,0 +1,46 @@
+# Decap CMS: edits are committed to your Git repo and trigger a redeploy.
+backend:
+  name: github            # on Netlify you can use `git-gateway` instead
+  repo: YOUR-ORG/YOUR-REPO
+  branch: main
+local_backend: true       # run `npx decap-server` for local editing
+media_folder: public/uploads
+public_folder: /uploads
+collections:
+  - name: projects
+    label: Projects
+    folder: content/projects
+    extension: json
+    format: json
+    create: true
+    identifier_field: name
+    fields:
+      - { label: Order, name: order, widget: number, value_type: int }
+      - { label: Name, name: name }
+      - { label: URL slug, name: slug, hint: "Lowercase with hyphens. Becomes /projects/your-slug" }
+      - { label: Type, name: type, widget: select, options: [Residential, Commercial, Interiors, Landscape] }
+      - { label: Place, name: place }
+      - { label: Year, name: year, widget: number, value_type: int }
+      - { label: Cover image, name: img, widget: image }
+      - { label: Summary, name: blurb, widget: text }
+      - { label: Client, name: client, required: false }
+      - { label: Area, name: area, required: false }
+      - { label: Status, name: status, widget: select, options: [Completed, In construction, In design] }
+      - { label: Description, name: body, widget: text, hint: "Separate paragraphs with a blank line" }
+      - { label: Gallery, name: gallery, widget: list, field: { label: Image, name: image, widget: image } }
+  - name: site
+    label: Site settings
+    files:
+      - label: Site content
+        name: site
+        file: content/site.json
+        format: json
+        fields:
+          - { label: Brand name, name: brand }
+          - { label: Contact email, name: email }
+          - { label: Stats, name: stats, widget: list, fields: [{ label: Number, name: value }, { label: Label, name: label }] }
+          - { label: Services, name: services, widget: list, fields: [{ label: Name, name: name }, { label: Description, name: text, widget: text }] }
+          - { label: Process steps, name: process, widget: list, fields: [{ label: Name, name: name }, { label: Description, name: text, widget: text }] }
+          - { label: Team, name: team, widget: list, fields: [{ label: Name, name: name }, { label: Role, name: role }, { label: Photo, name: photo, widget: image }] }
+          - { label: Testimonials, name: testimonials, widget: list, fields: [{ label: Quote, name: quote, widget: text }, { label: Name, name: name }, { label: Role, name: role }, { label: Photo, name: photo, widget: image }] }
+          - { label: FAQ, name: faq, widget: list, fields: [{ label: Question, name: q }, { label: Answer, name: a, widget: text }] }

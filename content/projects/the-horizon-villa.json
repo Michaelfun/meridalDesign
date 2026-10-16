@@ -1,0 +1,19 @@
+{
+  "order": 1,
+  "name": "The Horizon Villa",
+  "slug": "the-horizon-villa",
+  "type": "Residential",
+  "place": "Lake Como, Italy",
+  "year": 2025,
+  "img": "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=70",
+  "blurb": "A modern villa that blends natural surroundings with minimal architecture.",
+  "client": "Private client",
+  "area": "420 m²",
+  "status": "Completed",
+  "body": "A modern villa that blends natural surroundings with minimal architecture.\n\nThe brief for The Horizon Villa asked for a residential project that responds to its setting in Lake Como, Italy. We planned it around light, views and everyday movement, then built it with our own crews.\n\nMaterials were chosen to age well on site, and the same team stayed with the project from first sketch to handover in 2025.",
+  "gallery": [
+    "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=70",
+    "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=70",
+    "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1200&q=70"
+  ]
+}

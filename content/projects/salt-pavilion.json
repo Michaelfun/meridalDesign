@@ -1,0 +1,19 @@
+{
+  "order": 6,
+  "name": "Salt Pavilion",
+  "slug": "salt-pavilion",
+  "type": "Landscape",
+  "place": "Zanzibar, Tanzania",
+  "year": 2023,
+  "img": "https://images.unsplash.com/photo-1511818966892-d7d671e672a2?auto=format&fit=crop&w=1200&q=70",
+  "blurb": "A coastal pavilion and gardens designed around the tide line.",
+  "client": "Private client",
+  "area": "180 m²",
+  "status": "Completed",
+  "body": "A coastal pavilion and gardens designed around the tide line.\n\nThe brief for Salt Pavilion asked for a landscape project that responds to its setting in Zanzibar, Tanzania. We planned it around light, views and everyday movement, then built it with our own crews.\n\nMaterials were chosen to age well on site, and the same team stayed with the project from first sketch to handover in 2023.",
+  "gallery": [
+    "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=70",
+    "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=70",
+    "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=70"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "order": 2,
+  "name": "Aster House",
+  "slug": "aster-house",
+  "type": "Residential",
+  "place": "Dar es Salaam, Tanzania",
+  "year": 2024,
+  "img": "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=70",
+  "blurb": "Courtyard living with deep verandas and cross-ventilated rooms.",
+  "client": "Private client",
+  "area": "310 m²",
+  "status": "Completed",
+  "body": "Courtyard living with deep verandas and cross-ventilated rooms.\n\nThe brief for Aster House asked for a residential project that responds to its setting in Dar es Salaam, Tanzania. We planned it around light, views and everyday movement, then built it with our own crews.\n\nMaterials were chosen to age well on site, and the same team stayed with the project from first sketch to handover in 2024.",
+  "gallery": [
+    "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=70",
+    "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1200&q=70",
+    "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1200&q=70"
+  ]
+}

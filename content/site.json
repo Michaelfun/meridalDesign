@@ -1,0 +1,144 @@
+{
+  "brand": "MR L PRODUCTION",
+  "email": "studio@mrlproduction.example",
+  "stats": [
+    {
+      "value": "250+",
+      "label": "Projects completed"
+    },
+    {
+      "value": "120+",
+      "label": "Happy clients"
+    },
+    {
+      "value": "15+",
+      "label": "Countries worldwide"
+    },
+    {
+      "value": "18",
+      "label": "Design awards"
+    }
+  ],
+  "services": [
+    {
+      "name": "Architectural design",
+      "text": "Concept, floor plans, planning submissions and construction drawings."
+    },
+    {
+      "name": "Structural engineering",
+      "text": "Foundations, frames and spans resolved before anyone breaks ground."
+    },
+    {
+      "name": "Construction",
+      "text": "Our own crews and site managers build exactly what we draw."
+    },
+    {
+      "name": "Interior design",
+      "text": "Joinery, materials, furniture and lighting designed with the building."
+    },
+    {
+      "name": "Landscape design",
+      "text": "Gardens, water and planting that tie the house to its site."
+    },
+    {
+      "name": "Project management",
+      "text": "One schedule, one budget and one point of contact from start to handover."
+    }
+  ],
+  "process": [
+    {
+      "name": "Brief and site",
+      "text": "We walk the plot, learn how you live and agree a clear scope and budget."
+    },
+    {
+      "name": "Design",
+      "text": "Plans, models and materials developed with you until every room earns its place."
+    },
+    {
+      "name": "Approvals",
+      "text": "We prepare and manage every permit, survey and engineering sign-off."
+    },
+    {
+      "name": "Build",
+      "text": "Our crews construct the house with weekly updates and a fixed handover date."
+    },
+    {
+      "name": "Handover",
+      "text": "Final inspection, a full documentation pack and five years of aftercare."
+    }
+  ],
+  "testimonials": [
+    {
+      "quote": "They kept the house we imagined and removed every surprise from the build.",
+      "name": "Amina R.",
+      "role": "Homeowner, Dar es Salaam",
+      "photo": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=160&q=70"
+    },
+    {
+      "quote": "Design and construction in one team meant decisions took days, not months.",
+      "name": "Daniel K.",
+      "role": "Operations director, Northline",
+      "photo": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=160&q=70"
+    },
+    {
+      "quote": "The interior feels like it was always part of the landscape.",
+      "name": "Sofia M.",
+      "role": "Villa owner, Lake Como",
+      "photo": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=160&q=70"
+    }
+  ],
+  "faq": [
+    {
+      "q": "Do you handle both design and construction?",
+      "a": "Yes. One team takes a project from the first sketch to handover, so there is a single contract and a single point of responsibility."
+    },
+    {
+      "q": "How long does a typical house take?",
+      "a": "Design usually takes three to five months and construction eight to fourteen, depending on size, site and approvals."
+    },
+    {
+      "q": "Can you work on a plot we already own?",
+      "a": "Yes. We start with a site visit and survey, then confirm what the plot allows before any design fees are committed."
+    },
+    {
+      "q": "Do you work outside your home region?",
+      "a": "We have delivered projects in more than fifteen countries and partner with local engineers and builders where needed."
+    },
+    {
+      "q": "How is the price set?",
+      "a": "After the brief we give a fixed design fee and a budgeted construction estimate that we refine at each design stage."
+    }
+  ],
+  "team": [
+    {
+      "name": "Amara Okafor",
+      "role": "Principal architect",
+      "photo": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=800&q=70"
+    },
+    {
+      "name": "Lukas Brandt",
+      "role": "Head of design",
+      "photo": "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=800&q=70"
+    },
+    {
+      "name": "Neema Mushi",
+      "role": "Structural engineer",
+      "photo": "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=800&q=70"
+    },
+    {
+      "name": "Daniel Kessler",
+      "role": "Construction director",
+      "photo": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=800&q=70"
+    },
+    {
+      "name": "Sofia Marques",
+      "role": "Interior design lead",
+      "photo": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=800&q=70"
+    },
+    {
+      "name": "Joseph Mwakyusa",
+      "role": "Project manager",
+      "photo": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=800&q=70"
+    }
+  ]
+}
