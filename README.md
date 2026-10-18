@@ -27,3 +27,9 @@ Copy `.env.example` to `.env`. `VITE_PLAUSIBLE_DOMAIN` enables cookieless analyt
 
 ## The house model
 `src/Scene.jsx` builds a 3-bedroom, 2-toilet house procedurally from the supplied plan (10.4 m x 11.6 m, flat roof, columned entrance, drawing room, dining, kitchen, staircase). Edit `WALLS` (walls with window/door openings), `ITEMS` (furniture), `ROOMS` (plan labels) and `KEYS` (camera path). Trees, palms, lawn and sky are in the environment components at the bottom of the file.
+
+## Camera tour
+`src/tour.js` holds the camera track (`KEYS`), the on-screen captions (`STOPS`) and the tour length (`TOUR_VH`). `src/house.js` holds the walls, furniture, staircase and roof opening as plain data. After changing either, run `npm run check:tour`: it reports any point where the camera would pass through a wall, furniture or the ceiling, and any stretch where a wall fills the view.
+
+## After the tour
+Once the walk-through ends, the camera rises off the roof terrace and circles the finished house in slow motion (see `ORBIT_FROM` and the orbit block in `Rig`, `src/Scene.jsx`). Every section after the tour is transparent so the house stays visible; the copy sits on frosted panels. The 3D scene uses locally generated textures and reflections, so it needs no extra downloads.

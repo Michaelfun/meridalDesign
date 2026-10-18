@@ -15,6 +15,8 @@ export const TEAM = site.team
 export const FAQ = site.faq.map((f) => [f.q, f.a])
 
 export const IMG = {
+  services: u('1503387762-592deb58ef4e'), process: u('1531834685032-c34bf0d84c77', 1800), team: u('1487958449943-2429e8be8625', 1800),
+  quotes: u('1600607687939-ce8a6c25118c'), faq: u('1493809842364-78817add7ffb'), contact: u('1480074568708-e7b720bb3f09'), footer: u('1431576901776-e539bd916ba2', 1800),
   mountains: u('1464822759023-fed622ff2c3b', 1800),
   about: u('1600585154340-be6161a56a0c'),
   cta: u('1518780664697-55e3ad937233', 400),
