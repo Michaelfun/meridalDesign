@@ -6,6 +6,7 @@ import { BRAND, EMAIL, FAQ, IMG, PROCESS, PROJECTS, SERVICES, STATS, TEAM, TESTI
 import { track } from '../analytics'
 import { STOPS, TOUR_VH } from '../tour'
 import { Img, Pill } from './ui'
+import Logo from './Logo'
 
 /* Sections after the tour are transparent: the finished house keeps orbiting behind them.
    All copy sits on frosted panels so it stays readable over the 3D scene. */
@@ -24,7 +25,7 @@ export function Chapter({ side = 'left', stage, title, children }) {
   const opacity = useTransform(scrollYProgress, [0.2, 0.42, 0.58, 0.8], [0, 1, 1, 0])
   const y = useTransform(scrollYProgress, [0, 1], [50, -50])
   return (
-    <section ref={ref} className={`flex min-h-[130vh] items-center px-6 md:px-12 lg:px-36 ${side === 'right' ? 'justify-end lg:pr-16' : ''}`}>
+    <section ref={ref} className={`flex min-h-[130vh] items-center px-6 md:px-12 lg:px-16 ${side === 'right' ? 'justify-end lg:pr-16' : ''}`}>
       <motion.div style={{ opacity, y }} className="glass max-w-md rounded-[2rem] p-8">
         <p className="mb-3 text-sm text-clay">{stage}</p>
         <h2 className="font-display text-4xl font-light leading-[1.05] md:text-5xl">{title}</h2>
@@ -41,7 +42,7 @@ export function Tour({ progress }) {
   const s = STOPS[i]
   return (
     <section style={{ height: `${TOUR_VH}vh` }} className="relative">
-      <div className="pointer-events-none sticky top-0 flex h-screen items-end px-6 pb-8 md:px-12 lg:pl-36">
+      <div className="pointer-events-none sticky top-0 flex h-screen items-end px-6 pb-8 md:px-12 lg:pl-16">
         <AnimatePresence mode="wait">
           {s && (
             <motion.div key={i} initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.35 }} className="glass max-w-sm rounded-[2rem] p-6">
@@ -316,7 +317,7 @@ export function Footer() {
       </div>
       <div className="mt-8 border-t border-white/10 bg-[#1f1b17]/92 text-sand backdrop-blur-xl">
         <div className="mx-auto grid max-w-7xl gap-12 px-6 py-16 md:grid-cols-[1.5fr_1fr_1fr_1fr] md:px-12">
-          <div><p className="font-display text-4xl italic">ML</p><p className="mt-3 max-w-xs text-sm text-sand/70">Architecture, interiors and landscapes, designed and built by one team.</p><a href={`mailto:${EMAIL}`} className="mt-6 inline-block text-sm underline underline-offset-4">{EMAIL}</a></div>
+          <div><Logo light /><p className="mt-3 max-w-xs text-sm text-sand/70">Architecture, interiors and landscapes, designed and built by one team.</p><a href={`mailto:${EMAIL}`} className="mt-6 inline-block text-sm underline underline-offset-4">{EMAIL}</a></div>
           {cols.map(([h, ls]) => <nav key={h} aria-label={h}><h3 className="text-sm text-sand/55">{h}</h3><ul className="mt-4 grid gap-2.5 text-sm">{ls.map(([l, to]) => <li key={l}><Link to={to} className="hover:text-white">{l}</Link></li>)}</ul></nav>)}
           <nav aria-label="Social"><h3 className="text-sm text-sand/55">Follow</h3><ul className="mt-4 grid gap-2.5 text-sm">{SOCIAL.map(([l, href]) => <li key={l}><a href={href} target="_blank" rel="noopener noreferrer" className="hover:text-white">{l}</a></li>)}</ul></nav>
         </div>

@@ -1,4 +1,4 @@
-# MR L Production website
+# Meridian Studio website
 
 React 18, Vite, Tailwind v4, Framer Motion, react-three-fiber, React Router, Lenis.
 
@@ -33,3 +33,12 @@ Copy `.env.example` to `.env`. `VITE_PLAUSIBLE_DOMAIN` enables cookieless analyt
 
 ## After the tour
 Once the walk-through ends, the camera rises off the roof terrace and circles the finished house in slow motion (see `ORBIT_FROM` and the orbit block in `Rig`, `src/Scene.jsx`). Every section after the tour is transparent so the house stays visible; the copy sits on frosted panels. The 3D scene uses locally generated textures and reflections, so it needs no extra downloads.
+
+## Brand and logo
+The company name lives in one place: `brand` in `content/site.json` (also editable in the CMS under Site settings). The header and footer logo (`src/components/Logo.jsx`) reads it. Outlined SVG files for print, social and the favicon are in `public/` (`logo.svg`, `logo-light.svg`, `logo-mark.svg`, `favicon.svg`); if you rename the company, the wordmark in those files needs regenerating, but the mark itself stays.
+
+## Environment
+`src/vegetation.jsx` generates the tropical planting (areca and coconut-style palms, canopy trees, banana plants, flowering shrubs, grass) with instancing and a light breeze. Positions are listed in `build()`. The sun, clouds and sky gradient are in `src/Scene.jsx` (`SUN_VIS`, `SKY`, `Clouds`).
+
+## Mobile
+`src/quality.js` detects phones and small tablets. On those the 3D scene drops shadows, renders at a lower pixel ratio, uses fewer lights, clouds, leaves and grass blades, and re-frames the camera for tall screens.

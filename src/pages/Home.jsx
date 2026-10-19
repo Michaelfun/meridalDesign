@@ -28,8 +28,8 @@ export default function Home() {
       </motion.div>
       <div ref={story}>
         <Hero fade={fade} />
-        <Chapter stage="Stage 1: Plan" title="Every building starts as a line on paper.">We measure the plot, listen to how you want to live, and draw the plan until every room earns its place.</Chapter>
-        <Chapter side="right" stage="Stage 2: Build" title="Then the walls rise and the roof comes down.">The same team that drew it builds it. Structure, glazing and finishes follow the drawing exactly.</Chapter>
+        <Chapter stage="Stage 1: Plan" title="Precision planning before a single brick is laid.">Every dimension is surveyed, modelled and signed off with you, so the build runs to plan and to budget.</Chapter>
+        <Chapter side="right" stage="Stage 2: Build" title="Built by our own crews, inspected at every stage.">One accountable team, rigorous site checks and a handover date we stand behind.</Chapter>
         <Tour progress={progress} />
       </div>
       <div className="relative z-10">

@@ -5,6 +5,8 @@ import * as THREE from 'three'
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js'
 import { H, ITEMS, ROOF_PIECES, HOLE, T, TERRACE, WALLS, X, Z, wallParts } from './house'
 import { KEYS, PMAX, sample } from './tour'
+import Vegetation, { windU } from './vegetation'
+import { LOW } from './quality'
 
 /* ------------------------------------------------------------------ helpers */
 const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v))
@@ -13,7 +15,8 @@ const dip = (q, a, b, c, d) => 1 - (seg(q, a, b) - seg(q, c, d)) // 1 built, 0 p
 const mix = (q) => seg(q, 0.03, 0.2) - seg(q, 0.34, 0.5) // 0 = built, 1 = plan
 const col = (c) => new THREE.Color(c)
 const SHADOW = typeof window !== 'undefined' && window.innerWidth < 768 ? 1024 : 2048
-const SUN = new THREE.Vector3(18, 13, 15)
+const SUN = new THREE.Vector3(18, 13, 15) // key light: lights the front of the house
+const SUN_VIS = new THREE.Vector3(-6, 5, -28) // the sun you see in the sky, behind the house from the hero view
 const rnd = (a, b) => a + Math.random() * (b - a)
 
 /* ----------------------------------------------------- procedural textures */
@@ -41,9 +44,14 @@ const T_PAVER = tex(128, (g, s) => {
   g.strokeRect(0, 0, s, s); g.beginPath(); g.moveTo(s / 2, 0); g.lineTo(s / 2, s); g.moveTo(0, s / 2); g.lineTo(s, s / 2); g.stroke()
 }, [4, 20])
 const T_LAWN = tex(256, (g, s) => {
-  for (let i = 0; i < 8; i++) { g.fillStyle = i % 2 ? '#6f9150' : '#7a9d58'; g.fillRect(0, (i * s) / 8, s, s / 8) }
-  for (let k = 0; k < 2500; k++) { g.fillStyle = `rgba(40,70,30,${rnd(0.03, 0.12)})`; g.fillRect(rnd(0, s), rnd(0, s), 2, 2) }
-}, [24, 24])
+  g.fillStyle = '#5f9a3e'; g.fillRect(0, 0, s, s)
+  for (let k = 0; k < 70; k++) {
+    const x = rnd(0, s), y = rnd(0, s), r = rnd(20, 60), gr = g.createRadialGradient(x, y, 0, x, y, r)
+    gr.addColorStop(0, Math.random() < 0.5 ? 'rgba(120,180,70,0.35)' : 'rgba(35,95,40,0.3)'); gr.addColorStop(1, 'rgba(0,0,0,0)')
+    g.fillStyle = gr; g.fillRect(x - r, y - r, 2 * r, 2 * r)
+  }
+  for (let k = 0; k < 3000; k++) { g.fillStyle = `rgba(30,70,25,${rnd(0.04, 0.14)})`; g.fillRect(rnd(0, s), rnd(0, s), 2, 2) }
+}, [30, 30])
 const T_PLASTER = tex(256, (g, s) => {
   g.fillStyle = '#808080'; g.fillRect(0, 0, s, s)
   for (let k = 0; k < 6000; k++) { const v = rnd(90, 170); g.fillStyle = `rgb(${v},${v},${v})`; g.fillRect(rnd(0, s), rnd(0, s), 2, 2) }
@@ -64,8 +72,8 @@ const MAT = {
   glow: std('#ffd9a0', { emissive: '#ffb36b', emissiveIntensity: 1.8 }),
 }
 const LINE = col('#cdb899'), PLASTER = col('#ece5d9')
-const SKY = { hero: [col('#86a9cc'), col('#f2dcc0')], plan: [col('#efe7d9'), col('#efe7d9')], dusk: [col('#2f3a52'), col('#d08a5a')], gold: [col('#7ea3cf'), col('#f3c28e')] }
-const skyU = { top: { value: col('#86a9cc') }, bottom: { value: col('#f2dcc0') }, sunDir: { value: SUN.clone().normalize() }, sunK: { value: 1 } }
+const SKY = { hero: [col('#3f88d6'), col('#d4ebf2')], plan: [col('#efe7d9'), col('#efe7d9')], dusk: [col('#2f3a52'), col('#d08a5a')], gold: [col('#5f9bd8'), col('#f6d3a0')] }
+const skyU = { top: { value: col('#86a9cc') }, bottom: { value: col('#f2dcc0') }, sunDir: { value: SUN_VIS.clone().normalize() }, sunK: { value: 1 } }
 const VERT = `varying vec3 vDir;
 void main() { vDir = normalize(position); gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`
 const FRAG = `uniform vec3 top; uniform vec3 bottom; uniform vec3 sunDir; uniform float sunK;
@@ -73,7 +81,7 @@ varying vec3 vDir;
 void main() {
   vec3 c = mix(bottom, top, smoothstep(-0.02, 0.55, vDir.y));
   float s = max(dot(normalize(vDir), sunDir), 0.0);
-  c += sunK * vec3(1.0, 0.82, 0.55) * (pow(s, 900.0) * 3.0 + pow(s, 12.0) * 0.22);
+  c += sunK * vec3(1.0, 0.84, 0.58) * (pow(s, 1800.0) * 8.0 + pow(s, 60.0) * 0.7 + pow(s, 7.0) * 0.22);
   gl_FragColor = vec4(c, 1.0);
   #include <colorspace_fragment>
 }`
@@ -87,22 +95,28 @@ function Rig({ progress, p }) {
   useFrame((state, dt) => {
     p.current = THREE.MathUtils.damp(p.current, progress.get(), 3.5, dt)
     const q = p.current, t = state.clock.elapsedTime
+    windU.value = t
     sample(KEYS, q, 'pos', camPos); sample(KEYS, q, 'look', camLook)
+    // on tall phone screens, centre the house (the desktop framing leaves it to one side) and widen the lens
+    const portrait = clamp((1 - state.size.width / state.size.height) / 0.5)
+    const cx = 1 - 0.85 * portrait * (1 - seg(q, 0.6, 0.72))
+    camPos[0] *= cx; camLook[0] *= cx
     const w = seg(q, ORBIT_FROM, PMAX)
     if (w > 0) { // slow, continuous orbit: about two and a half minutes per revolution
-      const a = 0.6 + t * 0.04, r = 22 + Math.sin(t * 0.07) * 2, h = 7.5 + Math.sin(t * 0.11)
+      const a = 0.6 + t * 0.04, r = 24 + Math.sin(t * 0.07) * 2, h = 10 + Math.sin(t * 0.11)
       camPos[0] += (r * Math.sin(a) - camPos[0]) * w; camPos[1] += (h - camPos[1]) * w; camPos[2] += (r * Math.cos(a) - camPos[2]) * w
       camLook[0] *= 1 - w; camLook[1] += (1.8 - camLook[1]) * w; camLook[2] *= 1 - w
     }
     camera.position.set(camPos[0], camPos[1], camPos[2])
     camera.lookAt(camLook[0], camLook[1], camLook[2])
-    camera.fov = 40 + 22 * seg(q, 0.7, 0.82) - 16 * w
+    camera.fov = Math.min(88, (40 + 22 * seg(q, 0.7, 0.82) - 16 * w) * (1 + 0.6 * portrait))
     camera.updateProjectionMatrix()
 
     const e = dip(q, 0.03, 0.15, 0.5, 0.62)
     ;[skyU.top.value, skyU.bottom.value].forEach((c, n) =>
       c.copy(SKY.hero[n]).lerp(SKY.plan[n], seg(q, 0.03, 0.15)).lerp(SKY.hero[n], seg(q, 0.5, 0.62)).lerp(SKY.dusk[n], seg(q, 0.64, 0.8)).lerp(SKY.gold[n], w))
     skyU.sunK.value = e
+    cloudMat.opacity = 0.9 * e * (1 - 0.6 * seg(q, 0.64, 0.8) * (1 - w))
     scene.fog.color.copy(skyU.bottom.value)
 
     MAT.wall.color.lerpColors(PLASTER, LINE, mix(q))
@@ -110,6 +124,31 @@ function Rig({ progress, p }) {
     MAT.lawn.opacity = e
   }, -1)
   return null
+}
+
+const cloudMat = new THREE.MeshBasicMaterial({
+  map: tex(128, (g) => { const gr = g.createRadialGradient(64, 64, 0, 64, 64, 64); gr.addColorStop(0, 'rgba(255,255,255,0.95)'); gr.addColorStop(0.5, 'rgba(255,255,255,0.55)'); gr.addColorStop(1, 'rgba(255,255,255,0)'); g.fillStyle = gr; g.fillRect(0, 0, 128, 128) }, [1, 1]),
+  transparent: true, depthWrite: false, fog: false, toneMapped: false, opacity: 0,
+})
+
+// Soft cumulus puffs on the sky dome, drifting very slowly
+function Clouds() {
+  const g = useRef()
+  const puffs = useMemo(() => {
+    const r = (() => { let a = 21; return () => { a = (a * 16807) % 2147483647; return a / 2147483647 } })(), out = []
+    for (let k = 0; k < (LOW ? 8 : 16); k++) {
+      const az = r() * 6.283, el = 0.2 + r() * 0.5, R = 170
+      const bx = R * Math.cos(el) * Math.sin(az), by = R * Math.sin(el), bz = -R * Math.cos(el) * Math.cos(az), tx = Math.cos(az), tz = Math.sin(az)
+      for (let i = 0; i < 5; i++) { const ox = (r() - 0.5) * 44, sz = 38 + r() * 34; out.push({ pos: [bx + tx * ox, by + (r() - 0.5) * 8, bz + tz * ox], size: sz }) }
+    }
+    return out
+  }, [])
+  useFrame((state) => { g.current.rotation.y = state.clock.elapsedTime * 0.004 })
+  return (
+    <group ref={g}>
+      {puffs.map((c, i) => <mesh key={i} position={c.pos} material={cloudMat} renderOrder={-1} onUpdate={(m) => m.lookAt(0, 0, 0)}><planeGeometry args={[c.size, c.size * 0.55]} /></mesh>)}
+    </group>
+  )
 }
 
 function Sky() {
@@ -143,8 +182,9 @@ function Lights({ p }) {
   })
   return (
     <>
+      <directionalLight position={SUN_VIS.toArray()} color="#ffd9a0" intensity={0.55} />
       <hemisphereLight ref={hemi} args={['#fff1dc', '#6b5a48', 0.8]} />
-      <directionalLight ref={sun} position={SUN.toArray()} color="#ffe0b8" castShadow shadow-mapSize={[SHADOW, SHADOW]} shadow-bias={-0.0004} shadow-normalBias={0.03} shadow-radius={4} shadow-camera-left={-17} shadow-camera-right={17} shadow-camera-top={17} shadow-camera-bottom={-17} shadow-camera-near={5} shadow-camera-far={80} />
+      <directionalLight ref={sun} position={SUN.toArray()} color="#ffe0b8" castShadow={!LOW} shadow-mapSize={[SHADOW, SHADOW]} shadow-bias={-0.0004} shadow-normalBias={0.03} shadow-radius={4} shadow-camera-left={-17} shadow-camera-right={17} shadow-camera-top={17} shadow-camera-bottom={-17} shadow-camera-near={5} shadow-camera-far={80} />
     </>
   )
 }
@@ -303,44 +343,6 @@ function Label({ r, p }) {
 }
 
 /* ---------------------------------------------------------------- environment */
-const rng = (a) => () => { a |= 0; a = (a + 0x6d2b79f5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296 }
-
-function Tree({ x, z, s, m }) {
-  const mats = [MAT.g1, MAT.g2, MAT.g3]
-  return (
-    <group position={[x, 0, z]} scale={s}>
-      <mesh position={[0, 1, 0]} material={MAT.bark} castShadow><cylinderGeometry args={[0.14, 0.22, 2, 6]} /></mesh>
-      <mesh position={[0, 2.8, 0]} material={mats[m % 3]} castShadow><icosahedronGeometry args={[1.5, 1]} /></mesh>
-      <mesh position={[0.7, 3.6, 0.2]} material={mats[(m + 1) % 3]} castShadow><icosahedronGeometry args={[1.0, 1]} /></mesh>
-      <mesh position={[-0.7, 3.2, -0.3]} material={mats[(m + 2) % 3]} castShadow><icosahedronGeometry args={[0.9, 1]} /></mesh>
-    </group>
-  )
-}
-
-function Palm({ x, z, s = 1 }) {
-  return (
-    <group position={[x, 0, z]} scale={s}>
-      <mesh position={[0, 1.7, 0]} material={MAT.bark} castShadow><cylinderGeometry args={[0.1, 0.17, 3.4, 6]} /></mesh>
-      {Array.from({ length: 8 }, (_, k) => (
-        <group key={k} position={[0, 3.4, 0]} rotation={[0, (k * Math.PI * 2) / 8, 0]}>
-          <mesh position={[0.8, -0.12, 0]} rotation={[0, 0, -0.5]} scale={[1, 0.18, 0.4]} material={MAT.g3} castShadow><sphereGeometry args={[1, 8, 6]} /></mesh>
-        </group>
-      ))}
-    </group>
-  )
-}
-
-function Shrub({ x, z, s = 1, flower }) {
-  return (
-    <group position={[x, 0, z]} scale={s}>
-      <mesh position={[0, 0.35, 0]} scale={[1, 0.7, 1]} material={MAT.g2} castShadow><icosahedronGeometry args={[0.55, 1]} /></mesh>
-      {flower && [[0.25, 0.7, 0.1], [-0.2, 0.62, 0.25], [0.05, 0.75, -0.2]].map((f, n) => <mesh key={n} position={f}><sphereGeometry args={[0.1, 6, 6]} /><meshStandardMaterial color={flower} /></mesh>)}
-    </group>
-  )
-}
-
-const YARD = [[-11, -9, 1.1], [11, -8, 1.2], [-12.5, 6, 1.0], [12.5, 10, 1.1], [0, -13, 1.3], [-7, 15, 0.9], [8, 16, 1.0]]
-
 function Boundary() {
   const L = 16, F = 22, B = -16
   const run = [[-9.2, F, 13.6, 0.3], [9.2, F, 13.6, 0.3], [0, B, 2 * L + 0.3, 0.3], [-L, 3, 0.3, F - B], [L, 3, 0.3, F - B]]
@@ -365,16 +367,6 @@ function Boundary() {
 
 function Env({ p }) {
   const g = useRef()
-  const trees = useMemo(() => {
-    const r = rng(7), out = []
-    for (let n = 0; n < 30; n++) {
-      const a = r() * Math.PI * 2, d = 20 + r() * 26
-      let x = Math.cos(a) * d, z = Math.sin(a) * d
-      if (z > 0 && Math.abs(x) < 7) z = -z
-      out.push({ x, z, s: 0.8 + r() * 0.9, m: Math.floor(r() * 3) })
-    }
-    return out
-  }, [])
   useFrame(() => { g.current.scale.y = Math.max(dip(p.current, 0.03, 0.15, 0.5, 0.62), 0.001) })
   return (
     <>
@@ -384,12 +376,9 @@ function Env({ p }) {
         <Slab pos={[0, 0.15, Z + 1.4]} size={[5.4, 0.3, 2.8]} mat={MAT.path} />
         <Slab pos={[0, 0.05, Z + 3.0]} size={[3.8, 0.1, 0.5]} mat={MAT.path} />
         <Slab pos={[0, 0.1, Z + 2.7]} size={[3.8, 0.2, 0.5]} mat={MAT.path} />
-        {[-1, 1].flatMap((sx) => [[1.5, 6.7], [3.0, 6.7], [4.6, 6.7], [4.4, 6.0], [6.2, 9.5], [7.5, 12]].map(([x, z], n) => <Shrub key={`${sx}${n}`} x={sx * x} z={z} s={0.9 + (n % 2) * 0.3} flower={n % 2 ? '#d9605a' : '#e8a2b4'} />))}
-        <Palm x={-6.6} z={7.2} s={1.1} /><Palm x={6.6} z={7.2} s={1.0} /><Palm x={-8.5} z={2} s={1.2} /><Palm x={8.5} z={3} s={1.1} />
         {[-2.3, 2.3].flatMap((x) => [10, 14, 18].map((z) => <mesh key={`${x}${z}`} position={[x, 0.35, z]} material={MAT.glow}><cylinderGeometry args={[0.07, 0.07, 0.7, 8]} /></mesh>))}
         <Boundary />
-        {YARD.map(([x, z, s], n) => <Tree key={`y${n}`} x={x} z={z} s={s} m={n} />)}
-        {trees.map((t, n) => <Tree key={n} {...t} />)}
+        <Vegetation />
       </group>
     </>
   )
@@ -401,17 +390,18 @@ function Grid({ p }) {
   return <gridHelper ref={ref} args={[90, 90, '#b9a58e', '#d8c9b3']} position={[0, -0.03, 0]} material-transparent />
 }
 
+const LAMPS = [[[0, 2.6, 4.6], 32], [[-3.3, 2.6, 3.3], 32], [[3.3, 2.6, 3.6], 32], [[3.3, 2.6, -0.2], 32], [[0, 2.8, 7.6], 16], [[-3.3, 2.6, -4.2], 22], [[3.3, 2.6, -4.2], 22], [[-3.3, 2.6, -0.85], 22]]
+
 export default function Scene({ progress, active = true }) {
   const p = useRef(0)
   return (
-    <Canvas shadows="soft" dpr={[1, 1.75]} camera={{ fov: 40, near: 0.1, far: 500, position: [4, 3.2, 17] }} frameloop={active ? 'always' : 'never'}
+    <Canvas shadows={LOW ? false : 'soft'} dpr={LOW ? [1, 1.25] : [1, 1.75]} gl={{ antialias: !LOW, powerPreference: 'high-performance' }} camera={{ fov: 40, near: 0.1, far: 500, position: [4, 3.2, 17] }} frameloop={active ? 'always' : 'never'}
       onCreated={({ gl }) => { gl.toneMappingExposure = 1.05 }}>
       <color attach="background" args={['#e3d3bd']} />
       <fog attach="fog" args={['#f2dcc0', 45, 150]} />
       <Rig progress={progress} p={p} />
-      <Sky /><EnvMap /><Lights p={p} />
-      <Lamp pos={[0, 2.6, 4.6]} p={p} /><Lamp pos={[-3.3, 2.6, 3.3]} p={p} /><Lamp pos={[3.3, 2.6, 3.6]} p={p} /><Lamp pos={[3.3, 2.6, -0.2]} p={p} />
-      <Lamp pos={[0, 2.8, 7.6]} p={p} max={16} /><Lamp pos={[-3.3, 2.6, -4.2]} p={p} max={22} /><Lamp pos={[3.3, 2.6, -4.2]} p={p} max={22} /><Lamp pos={[-3.3, 2.6, -0.85]} p={p} max={22} />
+      <Sky /><Clouds /><EnvMap /><Lights p={p} />
+      {LAMPS.slice(0, LOW ? 5 : LAMPS.length).map(([pos, max], i) => <Lamp key={i} pos={pos} max={max} p={p} />)}
       <Grid p={p} />
       <Env p={p} />
       <Floors />

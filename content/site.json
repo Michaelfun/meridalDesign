@@ -1,6 +1,6 @@
 {
-  "brand": "MR L PRODUCTION",
-  "email": "studio@mrlproduction.example",
+  "brand": "Meridian Studio",
+  "email": "studio@meridianstudio.example",
   "stats": [
     {
       "value": "250+",
@@ -113,42 +113,42 @@
     {
       "name": "Amara Okafor",
       "role": "Principal architect",
-      "photo": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=800&q=70"
+      "photo": "https://images.unsplash.com/photo-1563132337-f159f484226c?auto=format&fit=crop&crop=faces&w=800&q=70"
     },
     {
-      "name": "Lukas Brandt",
+      "name": "Kwame Boateng",
       "role": "Head of design",
-      "photo": "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=800&q=70"
+      "photo": "https://images.unsplash.com/photo-1776781205743-33b4c1106adc?auto=format&fit=crop&crop=faces&w=800&q=70"
     },
     {
       "name": "Neema Mushi",
       "role": "Structural engineer",
-      "photo": "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=800&q=70"
+      "photo": "https://images.unsplash.com/photo-1519699047748-de8e457a634e?auto=format&fit=crop&crop=faces&w=800&q=70"
     },
     {
-      "name": "Daniel Kessler",
+      "name": "David Mrema",
       "role": "Construction director",
-      "photo": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=800&q=70"
+      "photo": "https://images.unsplash.com/photo-1566492031773-4f4e44671857?auto=format&fit=crop&crop=faces&w=800&q=70"
     },
     {
-      "name": "Sofia Marques",
+      "name": "Zawadi Kimaro",
       "role": "Interior design lead",
-      "photo": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=800&q=70"
+      "photo": "https://images.unsplash.com/photo-1523824921871-d6f1a15151f1?auto=format&fit=crop&crop=faces&w=800&q=70"
     },
     {
       "name": "Joseph Mwakyusa",
       "role": "Project manager",
-      "photo": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=800&q=70"
+      "photo": "https://images.unsplash.com/photo-1522529599102-193c0d76b5b6?auto=format&fit=crop&crop=faces&w=800&q=70"
     },
     {
       "name": "Grace Lyimo",
       "role": "Landscape architect",
-      "photo": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=70"
+      "photo": "https://images.unsplash.com/photo-1632765854612-9b02b6ec2b15?auto=format&fit=crop&crop=faces&w=800&q=70"
     },
     {
       "name": "Samuel Adeyemi",
       "role": "Senior site engineer",
-      "photo": "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=800&q=70"
+      "photo": "https://images.unsplash.com/photo-1492462543947-040389c4a66c?auto=format&fit=crop&crop=faces&w=800&q=70"
     }
   ]
 }

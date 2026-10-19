@@ -65,16 +65,16 @@ export const KEYS = [
 
 // Captions shown while the tour plays: active from `p` until the next one
 export const STOPS = [
-  { p: 0.72, stage: 'Stage 3: Live', label: 'Walk through it before it exists.', text: 'Light, materials and furniture are resolved from the start, so the finished rooms feel like the render.' },
-  { p: 0.84, stage: 'Ground floor', label: 'Entrance lobby', text: 'A bright entry with the staircase ahead and rooms opening to both sides.' },
-  { p: 0.9, stage: 'Ground floor', label: 'Drawing room', text: 'A calm lounge facing the garden, 13 ft by 11 ft.' },
-  { p: 0.98, stage: 'Ground floor', label: 'Dining room', text: 'Seats six, opens to the kitchen and takes light from two sides.' },
-  { p: 1.07, stage: 'Ground floor', label: 'Kitchen', text: 'Compact and efficient, with a window onto the side garden.' },
-  { p: 1.14, stage: 'Bedrooms', label: 'Bedroom three', text: 'Quiet, 12 ft 6 in by 11 ft, with its own wardrobe.' },
-  { p: 1.24, stage: 'Bedrooms', label: 'Bedroom two', text: 'Natural light and cross ventilation from the garden side.' },
-  { p: 1.32, stage: 'Bedrooms', label: 'Bedroom one', text: 'The third bedroom, set at the back for privacy.' },
-  { p: 1.49, stage: 'Staircase', label: 'Up to the roof terrace', text: 'A straight flight, open to the rooms on both sides.' },
-  { p: 1.67, stage: 'Roof terrace', label: 'The view from the top', text: 'A private terrace above the garden, ready for evenings outside.' },
+  { p: 0.72, stage: 'Meridian Studio', label: 'Homes built to be lived in.', text: 'Design and construction under one roof, with every detail checked before handover.' },
+  { p: 0.84, stage: 'Entrance lobby', label: 'A welcome that sets the tone.', text: 'Generous proportions, warm light and honest materials from the very first step.' },
+  { p: 0.9, stage: 'Drawing room', label: 'Modern living, filled with natural light.', text: 'Large glazing, quality finishes and calm, uncluttered layouts designed around how families live.' },
+  { p: 0.98, stage: 'Dining room', label: 'Spaces made for gathering.', text: 'Open to the kitchen, bright through the day and warm at night, with finishes chosen to last.' },
+  { p: 1.07, stage: 'Kitchen', label: 'Efficient layouts, premium finishes.', text: 'Durable worktops, quality fittings and smart storage, detailed by our designers and fitted by our own craftsmen.' },
+  { p: 1.14, stage: 'Bedrooms', label: 'Quiet rooms that restore you.', text: 'Cross-ventilation, soft natural light and sound-conscious construction for better sleep.' },
+  { p: 1.24, stage: 'Bedrooms', label: 'Comfort designed in, not added later.', text: 'Built-in storage, good insulation and carefully placed windows keep every room comfortable all year.' },
+  { p: 1.32, stage: 'Bedrooms', label: 'Privacy and calm at the back of the house.', text: 'Thoughtful planning gives every bedroom its own light, air and outlook.' },
+  { p: 1.49, stage: 'Staircase', label: 'Craftsmanship you can feel.', text: 'Solid construction, precise joinery and a clear path up to the roof terrace.' },
+  { p: 1.67, stage: 'Roof terrace', label: 'More living space, with a view.', text: 'Usable outdoor space that adds lasting value, planned in from day one.' },
 ]
 
 const TENSION = 0.6 // below 1 keeps the path closer to the waypoints, so it cannot swing into walls
